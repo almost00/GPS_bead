@@ -1,5 +1,6 @@
 package com.example.pbarn.gps_bead;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -55,7 +56,10 @@ public class SettingsChange_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+
         setContentView(R.layout.activity_settings_change_);
+
+
         db = new SQLite_Adatbazis(this);
 
 
