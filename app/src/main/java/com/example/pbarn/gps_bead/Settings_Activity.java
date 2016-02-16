@@ -175,7 +175,7 @@ public class Settings_Activity extends AppCompatActivity {
                 // Megvizsgálom, hogy érvényes mail címet adott e meg a felhasználó.
                 if(android.util.Patterns.EMAIL_ADDRESS.matcher(_email.getText().toString()).matches()) {
                     Log.e("OnClickSettingsMentes", "A beadott adatok érvésnyesek");
-
+                    startMainActivity();
                     //Ha mindent beadott helyesen akkor beszúrom a db-be
                     db.InsertRowSETTINGS(_name.getText().toString(), messageDigest, _email.getText().toString(), kivalasztottKepBase64);
 
