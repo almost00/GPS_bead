@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="A jelenlegi felhasználóneved:"
+        android:id="@+id/textView3"
+        android:textAlignment="center"
+        android:singleLine="false"
+        android:paddingTop="50px" />
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textViewSettingsChangeFelhasznalonevModositas"
+        android:paddingTop="20px"
+        android:singleLine="false"
+        android:textIsSelectable="false"
+        android:password="false" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextSettingsChangeFelhasznalonevModositas"
+        android:hint="Írd be az új felhasználóneved" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Mentés"
+        android:id="@+id/button"
+        android:onClick="SettingsChangeFelhasznalonevModositasMentesOnclick"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Mégse"
+        android:id="@+id/button2"
+        android:onClick="SettingsChangeFelhasznalonevModositasMegseOnclick"/>
+</LinearLayout>

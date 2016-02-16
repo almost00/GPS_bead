@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GPS_bead</string>
+    <string name="Beallitások">Beállítások</string>
+    <string name="Felhasználónév">Felhasználónév</string>
+    <string name="Módosítás">Módosítás</string>
+    <string name="Email">Email</string>
+    <string name="Kép">Kép</string>
+    <string name="Képcsere">Képcsere</string>
+    <string name="Jelszó">Jelszó</string>
+    <string name="JelszóMódosítás">Jelszó módosítás</string>
+    <string name="Vissza">Vissza</string>
+    <string name="google_app_id">56</string>
+</resources>
