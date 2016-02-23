@@ -90,8 +90,8 @@ public class SettingsChange_Activity extends AppCompatActivity implements Action
         tab2.setText("Beallitasok");
         tab2.setTabListener(this);
 
-        ab.addTab(tab1, 0, true);  //Trze miatt ez lesz a Selected alapértelmezetten
-        ab.addTab(tab2, 1, false);
+        ab.addTab(tab1, 0, false);  //Trze miatt ez lesz a Selected alapértelmezetten
+        ab.addTab(tab2, 1, true);
 
         ab.setDisplayShowTitleEnabled(false);
     }

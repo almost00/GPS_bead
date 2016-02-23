@@ -82,19 +82,19 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
         ab = getSupportActionBar();
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        ActionBar.Tab tab2=ab.newTab();
-        tab2.setText("Beallitasok");
-        tab2.setTabListener(this);
 
         // Three tab to display in actionbar
         ActionBar.Tab tab1=ab.newTab();
         tab1.setText("Terkep");
         tab1.setTabListener(this);
 
+        ActionBar.Tab tab2=ab.newTab();
+        tab2.setText("Beallitasok");
+        tab2.setTabListener(this);
 
 
-        ab.addTab(tab1, 0, false);
-        ab.addTab(tab2, 1, true);
+        ab.addTab(tab1, 0, true);
+        ab.addTab(tab2, 1, false);
 
         ab.setDisplayShowTitleEnabled(false);
 
@@ -149,7 +149,6 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
             case "Terkep":
                 break;
             case "Beallitasok":
-
                 Intent intent_ = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.SettingsChange_Activity.class);
                 startActivity(intent_);
                 break;

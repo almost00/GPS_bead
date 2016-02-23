@@ -8,16 +8,6 @@
     tools:context="com.example.pbarn.gps_bead.Mainmenu_Activity"
     android:orientation="vertical">
 
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="GPS program"
-        android:paddingTop="40dp"
-        android:id="@+id/textViewTelefonAdatok"
-        android:textAlignment="center" />
-
 
 
     <TextView

@@ -152,12 +152,8 @@ public class GPS_Service extends Service {
                 sendBroadcast(intent);
 
 
-                //Lekérdezem a felhasználónak az  ID-ját
-
 
                 Date d = new Date();
-
-                //Ezzel az ID-val szúrom be a GPS_data táblába
                 db.InsertRowGPSDATA(loc.getLatitude(), loc.getLongitude(), d.getTime());
             }
         }

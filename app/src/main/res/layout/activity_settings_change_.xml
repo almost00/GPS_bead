@@ -13,17 +13,6 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Beallitások"
-        android:id="@+id/textView"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:typeface="serif"
-        android:gravity="center" />
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Felhasználónév"
