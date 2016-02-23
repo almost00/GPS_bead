@@ -89,11 +89,11 @@ public class Settings_Activity extends AppCompatActivity {
                     Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
 
                     //Átméretezzük a képet 100x100 assá
-                    yourSelectedImage = getResizedBitmap(yourSelectedImage,100,100);
+                    yourSelectedImage = KepMuveletek.getResizedBitmap(yourSelectedImage, 100, 100);
 
                     Log.e("SWITCH_VEGE", "SWITCH_VEGE");
                     //Eltarolom kulso valtozoban a kivalsztott, és már átméretezett
-                    kivalasztottKepBase64 = encodeTobase64(yourSelectedImage);
+                    kivalasztottKepBase64 = KepMuveletek.encodeTobase64(yourSelectedImage);
 
                     //Kép betöltése az imageview-ba
                     ImageView imageViewKep = (ImageView) findViewById(R.id.imageViewKep);
@@ -102,36 +102,6 @@ public class Settings_Activity extends AppCompatActivity {
         }
     }
 
-    //A kiválasztott kép átméretezéséhez.
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
-    //Base64-el kódolom a képet
-    public static String encodeTobase64(Bitmap image)
-    {
-        Bitmap immagex= image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.NO_WRAP);
-
-        Log.e("Base64Kodolt_kep", imageEncoded);
-        return imageEncoded;
-    }
-    //Base64 visszafejtése
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
 
     //Eseménykezelő: A bepötyörészett adatokat elmentem egy adatbázisba. Majd továbbítom a webszerver felé.
     public void  OnClickSettingsMentes(View view) {

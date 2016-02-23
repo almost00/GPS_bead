@@ -1,12 +1,14 @@
 package com.example.pbarn.gps_bead;
 
-import android.app.ActionBar;
+
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SettingsChange_Activity extends AppCompatActivity {
+public class SettingsChange_Activity extends AppCompatActivity implements ActionBar.TabListener {
 
     SQLite_Adatbazis db;
     int felhasznalo_ID;
@@ -54,17 +56,10 @@ public class SettingsChange_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_settings_change_);
 
 
         db = new SQLite_Adatbazis(this);
-
-
-
-
         Log.e("SettingsChange_Activity", "Elindult a SettingsChange_Activity");
 
         ArrayList<String> settingsAdatok = db.getSettingsAdatok();
@@ -81,11 +76,25 @@ public class SettingsChange_Activity extends AppCompatActivity {
 
 
         //Betöltöm a már beadott adatokat a megfelelő szövegmezőkbe/imageView-ba.
-        alapBeallitasok(felhasznalonevUj, jelszoUj, decodeBase64(kivalasztottKepBase64Uj), emailRegi);
+        alapBeallitasok(felhasznalonevUj, jelszoUj, KepMuveletek.decodeBase64(kivalasztottKepBase64Uj), emailRegi);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        // Three tab to display in actionbar
+        ActionBar.Tab tab1=ab.newTab();
+        tab1.setText("Terkep");
+        tab1.setTabListener(this);
+
+        ActionBar.Tab tab2=ab.newTab();
+        tab2.setText("Beallitasok");
+        tab2.setTabListener(this);
+
+        ab.addTab(tab1, 0, true);  //Trze miatt ez lesz a Selected alapértelmezetten
+        ab.addTab(tab2, 1, false);
+
+        ab.setDisplayShowTitleEnabled(false);
     }
-
-
 
 
     //Felhasználónév megváltoztatásához
@@ -105,15 +114,15 @@ public class SettingsChange_Activity extends AppCompatActivity {
             setContentView(R.layout.activity_settings_change_);
 
             felhasznalonevUj = editTextFelhasznalonev.getText().toString();
-            alapBeallitasok(felhasznalonevUj,jelszoUj,decodeBase64(kivalasztottKepBase64Uj),emailRegi);
+            alapBeallitasok(felhasznalonevUj,jelszoUj,KepMuveletek.decodeBase64(kivalasztottKepBase64Uj),emailRegi);
         }
         setContentView(R.layout.activity_settings_change_);
-        alapBeallitasok(felhasznalonevUj,jelszoUj,decodeBase64(kivalasztottKepBase64Uj),emailRegi);
+        alapBeallitasok(felhasznalonevUj, jelszoUj, KepMuveletek.decodeBase64(kivalasztottKepBase64Uj), emailRegi);
     }
     public void SettingsChangeFelhasznalonevModositasMegseOnclick(View view)
     {
         setContentView(R.layout.activity_settings_change_);
-        alapBeallitasok(felhasznalonevUj, jelszoUj, decodeBase64(kivalasztottKepBase64Uj), emailRegi);
+        alapBeallitasok(felhasznalonevUj, jelszoUj, KepMuveletek.decodeBase64(kivalasztottKepBase64Uj), emailRegi);
     }
 
 
@@ -137,7 +146,7 @@ public class SettingsChange_Activity extends AppCompatActivity {
 
                 jelszoUj=  sha1Sajat(ujjelszo1.getText().toString());
                 setContentView(R.layout.activity_settings_change_);
-                alapBeallitasok(felhasznalonevUj,jelszoUj,decodeBase64(kivalasztottKepBase64Uj),emailRegi);
+                alapBeallitasok(felhasznalonevUj,jelszoUj,KepMuveletek.decodeBase64(kivalasztottKepBase64Uj),emailRegi);
             }
             else{
                 Toast.makeText(this, "A két új jelszó nem egyezik!", Toast.LENGTH_LONG).show();
@@ -151,14 +160,9 @@ public class SettingsChange_Activity extends AppCompatActivity {
 
     public void SettingsChangeJelszoModositasMegseOnclick(View view) {
         setContentView(R.layout.activity_settings_change_);
-        alapBeallitasok(felhasznalonevUj,jelszoUj,decodeBase64(kivalasztottKepBase64Uj),emailRegi);
+        alapBeallitasok(felhasznalonevUj, jelszoUj, KepMuveletek.decodeBase64(kivalasztottKepBase64Uj), emailRegi);
     }
 
-
-    public static Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
 
 
     //Képcsere
@@ -188,11 +192,11 @@ public class SettingsChange_Activity extends AppCompatActivity {
                     Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
 
                     //Átméretezzük a képet 100x100 assá
-                    yourSelectedImage = getResizedBitmap(yourSelectedImage,100,100);
+                    yourSelectedImage = KepMuveletek.getResizedBitmap(yourSelectedImage, 100, 100);
 
                     Log.e("SWITCH_VEGE", "SWITCH_VEGE");
                     //Eltarolom kulso valtozoban a kivalsztott, és már átméretezett
-                    kivalasztottKepBase64Uj = encodeTobase64(yourSelectedImage);
+                    kivalasztottKepBase64Uj = KepMuveletek.encodeTobase64(yourSelectedImage);
 
                     //Kép betöltése az imageview-ba
                     ImageView imageViewKep = (ImageView) findViewById(R.id.imageViewSettingsChangeKep);
@@ -203,29 +207,7 @@ public class SettingsChange_Activity extends AppCompatActivity {
         }
     }
 
-    //A kiválasztott kép átméretezéséhez.
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
-    //Base64-el kódolom a képet
-    public static String encodeTobase64(Bitmap image)
-    {
-        Bitmap immagex= image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.NO_WRAP);
 
-        return imageEncoded;
-    }
 
     public String sha1Sajat(String jelszo){
 
@@ -285,6 +267,29 @@ public class SettingsChange_Activity extends AppCompatActivity {
 
 
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+        //Called when a tab is selected
+        //int nTabSelected = tab.getPosition();
+        switch (tab.getText().toString()) {
+            case "Terkep":
+                Intent intent_ = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.Mainmenu_Activity.class);
+                startActivity(intent_);
+                break;
+            case "Beallitasok":
 
+                break;
 
+        }
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+
+    }
 }

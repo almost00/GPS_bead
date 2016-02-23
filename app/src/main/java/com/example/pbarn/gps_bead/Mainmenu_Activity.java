@@ -1,12 +1,17 @@
 package com.example.pbarn.gps_bead;
 
+
 import android.app.ActivityManager;
 import android.app.ApplicationErrorReport;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +46,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class Mainmenu_Activity extends FragmentActivity {
+public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.TabListener {
 
     MyReceiver myReceiver;
     GoogleMap googleMap;
@@ -72,6 +77,27 @@ public class Mainmenu_Activity extends FragmentActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.GPS_ADAT");
         registerReceiver(myReceiver, intentFilter); //felregisztrálás
+
+        ActionBar ab;
+        ab = getSupportActionBar();
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        ActionBar.Tab tab2=ab.newTab();
+        tab2.setText("Beallitasok");
+        tab2.setTabListener(this);
+
+        // Three tab to display in actionbar
+        ActionBar.Tab tab1=ab.newTab();
+        tab1.setText("Terkep");
+        tab1.setTabListener(this);
+
+
+
+        ab.addTab(tab1, 0, false);
+        ab.addTab(tab2, 1, true);
+
+        ab.setDisplayShowTitleEnabled(false);
+
     }
 
 
@@ -109,6 +135,35 @@ public class Mainmenu_Activity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(myReceiver);
+    }
+
+
+
+
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        //Called when a tab is selected
+        //int nTabSelected = tab.getPosition();
+        switch (tab.getText().toString()) {
+            case "Terkep":
+                break;
+            case "Beallitasok":
+
+                Intent intent_ = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.SettingsChange_Activity.class);
+                startActivity(intent_);
+                break;
+           }
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
     }
 
 
