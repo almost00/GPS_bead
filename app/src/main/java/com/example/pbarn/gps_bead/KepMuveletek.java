@@ -25,6 +25,7 @@ public class KepMuveletek {
         bm.recycle();
         return resizedBitmap;
     }
+
     //Base64-el kódolom a képet
     public static String encodeTobase64(Bitmap image)
     {

@@ -53,7 +53,10 @@ public class GPS_Service extends Service {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
 
-
+          //LocationManager.GPS_PROVIDER: the name of the provider with which to register
+         //4000: LocationUpdate-ek közötti minimúm idő intervallum milisec-ben.
+        // 0: LocationUpdate-ek közötti minimúm távolság intervallum méterben.
+        // listener: neki az onLocationChanged metódusa minden locationUpdate-nál lefut. => Tehát dobunk egy broadcast üzit.
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
         Log.e("GPS_Service_onStart", "Elindult a Service");
     }
@@ -69,20 +72,24 @@ public class GPS_Service extends Service {
         boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
         boolean isNewer = timeDelta > 0;
 
+        // If it's been more than two minutes since the current location, use the new location because the user has likely moved
         if (isSignificantlyNewer) {
             return true;
         } else if (isSignificantlyOlder) {
             return false;
         }
 
+        // Check whether the new location fix is more or less accura
         int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
         boolean isLessAccurate = accuracyDelta > 0;
         boolean isMoreAccurate = accuracyDelta < 0;
         boolean isSignificantlyLessAccurate = accuracyDelta > 200;
 
+        // Check if the old and new location are from the same provider
         boolean isFromSameProvider = isSameProvider(location.getProvider(),
                 currentBestLocation.getProvider());
 
+        // Determine location quality using a combination of timeliness and accuracy
         if (isMoreAccurate) {
             return true;
         } else if (isNewer && !isLessAccurate) {
@@ -150,8 +157,6 @@ public class GPS_Service extends Service {
                 intent.putExtra("Provider", loc.getProvider());
 
                 sendBroadcast(intent);
-
-
 
                 Date d = new Date();
                 db.InsertRowGPSDATA(loc.getLatitude(), loc.getLongitude(), d.getTime());

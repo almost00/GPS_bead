@@ -8,8 +8,6 @@
     tools:context="com.example.pbarn.gps_bead.Mainmenu_Activity"
     android:orientation="vertical">
 
-
-
     <TextView
         android:text="Hosszúság:"
         android:layout_width="wrap_content"
