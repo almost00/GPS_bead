@@ -38,13 +38,8 @@ import java.util.Random;
 
 public class Settings_Activity extends AppCompatActivity {
 
-
-
-    static  SQLite_Adatbazis db ;
+    SQLite_Adatbazis db ;
     String kivalasztottKepBase64;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +98,7 @@ public class Settings_Activity extends AppCompatActivity {
     }
 
 
+
     //Eseménykezelő: A bepötyörészett adatokat elmentem egy adatbázisba. Majd továbbítom a webszerver felé.
     public void  OnClickSettingsMentes(View view) {
         EditText _name = (EditText)findViewById(R.id.textViewNev);
@@ -110,45 +106,33 @@ public class Settings_Activity extends AppCompatActivity {
         EditText _passwordmegint = (EditText)findViewById(R.id.textViewtextViewJelszomegint);
         EditText _email = (EditText)findViewById(R.id.textViewEmail);
 
+        adatEll(_name.getText().toString(), _password.getText().toString(), _passwordmegint.getText().toString(), _email.getText().toString());
+
+    }
+
+
+    public void adatEll(String name, String password, String passwordmegint, String email)
+    {
         //A beadott jelszavak egyezőségét vizsgálom.
-        if (!_password.getText().toString().equals(_passwordmegint.getText().toString()))
+        if (!password.equals(passwordmegint))
         {
             Toast.makeText(this, "A megadott jelszó nem egyezik. Kérlek pötyögd be újra.", Toast.LENGTH_LONG).show();
-
         }
         else {
-            //SHA-1-el HASH-elem a jelszót----------------------------------------------------------------
-            final MessageDigest digest;
-            byte[] result = new byte[0];
-            try {
-                digest = MessageDigest.getInstance("SHA-1");
-                result = digest.digest(_password.getText().toString().getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            // Another way to make HEX, my previous post was only the method like your solution
-            StringBuilder sb = new StringBuilder();
 
-            for (byte b : result) // Bejárom a result tömböt.
-            {
-                sb.append(String.format("%02X", b));
-            }
-            String messageDigest = sb.toString(); //Sha-1el hash-elve a jelszó
-            Log.e("SHA1", messageDigest);
-            //---------------------SHA-1 hashelés vége-------------------------------------------------
+            String passwordSha1 = Sha1Sajat(password); //Sha-1el hash-elve a jelszó
+            Log.e("SHA1", passwordSha1);
 
             //Megnézzük kitöltötte e az adatmezőket.
-            if (_name.getText().toString().length() > 0 && _password.getText().toString().length() > 0 && _email.getText().toString().length() > 0) {
+            if (name.length() > 0 && password.length() > 0 && email.length() > 0) {
 
                 // Megvizsgálom, hogy érvényes mail címet adott e meg a felhasználó.
-                if(android.util.Patterns.EMAIL_ADDRESS.matcher(_email.getText().toString()).matches()) {
+                if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     Log.e("OnClickSettingsMentes", "A beadott adatok érvésnyesek");
-                    startMainActivity();
                     //Ha mindent beadott helyesen akkor beszúrom a db-be
-                    db.InsertRowSETTINGS(_name.getText().toString(), messageDigest, _email.getText().toString(), kivalasztottKepBase64);
 
+                    db.InsertRowSETTINGS(name, password, email, kivalasztottKepBase64);
+                    startMainActivity();
                 }
                 else
                 {
@@ -158,6 +142,30 @@ public class Settings_Activity extends AppCompatActivity {
                 Toast.makeText(this, "Kérlek minden adatmezőt töltsél ki.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public String Sha1Sajat(String jelszo){
+
+        final MessageDigest digest;
+        byte[] result = new byte[0];
+        try {
+            digest = MessageDigest.getInstance("SHA-1");
+            result = digest.digest(jelszo.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        // Another way to make HEX, my previous post was only the method like your solution
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : result) // Bejárom a result tömböt.
+        {
+            sb.append(String.format("%02X", b));
+        }
+        Log.e("SHA1", sb.toString());
+        return sb.toString(); //Sha-1el hash-elve a jelszó
+
 
     }
 

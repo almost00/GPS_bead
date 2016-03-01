@@ -24,7 +24,7 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "GPS_DATABASE";
 
     private static final String TABLE_SETTINGS = "Settings";  //ID, Név,jelszó,email, kép
-    private static final String TABLE_GPSDATA = "GpsData";  //ID,  Lat, Lon, Timestamp
+    private static final String TABLE_GPSDATA = "GpsData";  //  Lat, Lon, Timestamp
 
     //SETTINGS tábla
     private static final String SETTINGS_ID = "ID";
