@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -96,6 +99,42 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
                 }
             }
         });
+
+        //GPS bekapcsolása
+        final TextView gpsBekapcsolasaTextView = (TextView) findViewById(R.id.GpsBekapcsolasTextView);
+        gpsBekapcsolasaTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent beallitasokGPSIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(beallitasokGPSIntent);
+            }
+        });
+
+        //Adatforgalom bekapcsolása
+        final TextView adatforgalomBekapcsolasaTextView = (TextView)findViewById(R.id.AdatforgalomBekapcsolasTextView);
+        adatforgalomBekapcsolasaTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent beallitasokGPSIntent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                startActivity(beallitasokGPSIntent);
+            }
+        });
+
+        //Kattintas animalasa
+        final AlphaAnimation kattintas = new AlphaAnimation(1F, 0.8F);
+        kattintas.setDuration(1000);
+        //Személyes beállításokba átnavigálás
+        final TextView adatokTextView = (TextView) findViewById(R.id.SzemelyesBeallitasokTextView);
+        adatokTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(kattintas);
+
+                Intent intent = new Intent(v.getContext(), SettingsChange_Activity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
