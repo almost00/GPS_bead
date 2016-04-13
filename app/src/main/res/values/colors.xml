@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8d8f9b</color>
-    <color name="colorPrimaryDark">#b1b7de</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#719199</color>
+    <color name="colorPrimaryDark">#4b4c5d</color>
+    <color name="colorAccent">#3e3a3b</color>
+    <color name="background1">#a7a4a0</color>
+    <color name="button">#72929a</color>
+    <color name="textViewHatter">#ad72929a</color>
+    <color name="textViewHatter2">#7972929a</color>
+    <color name="imageViewHatter" >#ad72929a</color>
+    <color name="listaElemHatter" >#7172929a</color>
 </resources>

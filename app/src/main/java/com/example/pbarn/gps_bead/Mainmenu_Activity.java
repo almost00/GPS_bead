@@ -2,51 +2,29 @@ package com.example.pbarn.gps_bead;
 
 
 import android.app.ActivityManager;
-import android.app.ApplicationErrorReport;
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-
-
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-
-public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.TabListener {
+public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.TabListener, NavigationView.OnNavigationItemSelectedListener  {
 
     MyReceiver myReceiver;
     GoogleMap googleMap;
@@ -97,6 +75,27 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
         ab.addTab(tab2, 1, false);
 
         ab.setDisplayShowTitleEnabled(false);
+
+
+        //Navigation view példányosítása
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //Ezzel tudom bekergetni a NavigationView baloldalról
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
 
     }
 
@@ -166,6 +165,7 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
     }
 
 
+
     //Elkapjuk, és kiíratjuk a Lat, és Lon adatokat, amiket a GPS_Service küld.
     public class MyReceiver extends BroadcastReceiver {
         static final String TAG = "android.intent.action.GPS_ADAT";
@@ -183,11 +183,11 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
                         Log.e("Longitude", "Longitude: " + longitude);
                         Log.e("Latitude", "Latitude: " + latitude);
 
-                        TextView textViewLat = (TextView) findViewById(R.id.textViewLatitude);
-                        textViewLat.setText("Latitude: " +  latitude + "");
+                      //  TextView textViewLat = (TextView) findViewById(R.id.textViewLatitude);
+                      //  textViewLat.setText("Latitude: " +  latitude + "");
 
-                        TextView   textViewLon = (TextView) findViewById(R.id.textViewLongitude);
-                        textViewLon.setText("Longitude: " + longitude + "");
+                      //  TextView   textViewLon = (TextView) findViewById(R.id.textViewLongitude);
+                      //  textViewLon.setText("Longitude: " + longitude + "");
 
 
                         //Aktuális pozíciónak jelölő marker kitétele a térképre.
@@ -202,6 +202,27 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
 
     }
 
+
+
+    //----------------NAVIGATION VIEW ----------
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
 
