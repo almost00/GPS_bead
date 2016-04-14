@@ -6,6 +6,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +24,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -135,8 +141,26 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
             }
         });
 
-
+        //ImageView kep beallit a navigation bar-on <-- Kerekített szélekkel
+        imageViewKepBeallit(db.felhasznalokKep(), (ImageView) findViewById(R.id.imageView));
     }
+
+    //ImageView kep beallit a navigation bar-on <-- Kerekített szélekkel
+    private void imageViewKepBeallit(Bitmap kep, ImageView imageView){
+
+        Bitmap circleBitmap = Bitmap.createBitmap(kep.getWidth(), kep.getHeight(), Bitmap.Config.ARGB_8888);
+
+        BitmapShader shader = new BitmapShader(kep,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setShader(shader);
+
+        Canvas c = new Canvas(circleBitmap);
+
+        c.drawCircle(kep.getWidth()/2, kep.getHeight()/2, kep.getWidth()/2, paint);
+
+        imageView.setImageBitmap(circleBitmap);
+    }
+
 
 
     @Override

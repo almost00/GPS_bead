@@ -5,14 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by pbarn on 2016. 01. 16..
@@ -97,6 +93,21 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
     //     }
     //     return  "";
     // }
+
+
+    //Regisztráció során, vagy később beállított kép lekérdezése
+    public Bitmap felhasznalokKep(){
+        Cursor b = db.rawQuery("Select Kep From Settings", null, null);
+        Bitmap kep;
+        if (b.moveToLast()) {
+            kep = KepMuveletek.decodeBase64(b.getString(b.getColumnIndex("Kep")));
+            b.close();
+            return kep;
+        }
+        b.close();
+        return null;
+    }
+
 
 
 
