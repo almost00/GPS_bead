@@ -1,8 +1,5 @@
 package com.example.pbarn.gps_bead;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -11,23 +8,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 public class GPS_Service extends Service {
@@ -55,9 +39,10 @@ public class GPS_Service extends Service {
 
           //LocationManager.GPS_PROVIDER: the name of the provider with which to register
          //4000: LocationUpdate-ek közötti minimúm idő intervallum milisec-ben.
-        // 0: LocationUpdate-ek közötti minimúm távolság intervallum méterben.
+        // 5: LocationUpdate-ek közötti minimúm távolság intervallum méterben.
         // listener: neki az onLocationChanged metódusa minden locationUpdate-nál lefut. => Tehát dobunk egy broadcast üzit.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 5, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 5, listener);
         Log.e("GPS_Service_onStart", "Elindult a Service");
     }
 
