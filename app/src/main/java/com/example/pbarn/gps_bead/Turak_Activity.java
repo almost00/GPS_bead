@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,9 +35,28 @@ public class Turak_Activity extends AppCompatActivity implements ActionBar.TabLi
             // Create the adapter to convert the array to views
             final TuraAdapter adapter = new TuraAdapter(this, turaLista);
             // Attach the adapter to a ListView
-            ListView listViewMuemlekek = (ListView) findViewById(R.id.mainListView);
-            listViewMuemlekek.setAdapter(adapter);
+            ListView listViewTura = (ListView) findViewById(R.id.mainListView);
+            listViewTura.setAdapter(adapter);
+
+            listViewTura.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Tura value = (Tura) adapter.getItem(position);
+                    String seged = "";
+                    for(int i = 0; i< value.getPozAdatok().size(); i++)
+                    {
+                        seged +=  value.getPozAdatok().get(i).getLat() + " ";
+                        Log.e("LAt", value.pozAdatok.get(i).lat + " " + value.pozAdatok.get(i).time);
+                    }
+                    Toast.makeText(getApplicationContext(),seged, Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
+
+
+
+
         ActionBar ab;
         ab = getSupportActionBar();
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

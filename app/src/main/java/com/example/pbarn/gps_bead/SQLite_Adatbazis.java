@@ -1,11 +1,13 @@
 package com.example.pbarn.gps_bead;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -160,14 +162,15 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public ArrayList<Tura> turaListaz() {
         ArrayList<Tura> turakArrayList = new ArrayList<Tura>();
-        ArrayList<PozAdatok> pozadatok = new ArrayList<PozAdatok>();
-        for (int i = 0; i < 10; i++) {
-           Tura tura = new Tura();
-            Cursor c = db.rawQuery("Select * From GpsData  WHERE TuraID = ? ", new String[]{i + ""}, null);
-            while (c.moveToNext()) {
 
+        for (int i = 1; i < 10; i++) {
+            Tura tura = new Tura();
+            ArrayList<PozAdatok> pozadatok = new ArrayList<PozAdatok>();
+            Cursor c = db.rawQuery("Select * From GpsData  WHERE TuraID = "+i + "",null,null);
+            while (c.moveToNext()) {
                 pozadatok.add(new PozAdatok(
                         c.getDouble(c.getColumnIndex("Latitude")),
                         c.getDouble(c.getColumnIndex("Longitude")),
@@ -175,12 +178,14 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
                         c.getFloat(c.getColumnIndex("Speed")),
                         c.getString(c.getColumnIndex("Timestamp"))
                 ));
+                tura.setTuraAzon(c.getString(c.getColumnIndex("TuraID")));
+
+                tura.setTuraDatum(c.getString(c.getColumnIndex("Timestamp")));
             }
-            tura.setTuraAzon(c.getString(c.getColumnIndex("TuraID")));
-            tura.setPozAdatok(pozadatok);
-            tura.setTuraDatum(c.getString(c.getColumnIndex("Timestamp")));
-            turakArrayList.add(tura);
-            pozadatok.clear();
+            if( tura.getTuraAzon() != null) {
+                tura.setPozAdatok(pozadatok);
+                turakArrayList.add(tura);
+            }
             c.close();
         }
 
