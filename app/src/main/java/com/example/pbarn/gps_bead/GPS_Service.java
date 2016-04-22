@@ -22,6 +22,7 @@ public class GPS_Service extends Service {
     public LocationManager locationManager;
     public MyLocationListener listener;
     public Location previousBestLocation = null;
+    private int turaID;
 
     Intent intent;
     @Override
@@ -34,59 +35,57 @@ public class GPS_Service extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
+        if(intent != null){
+            turaID = intent.getIntExtra("TuraAzonosito", -1);
+        }
+
+        Log.e("SERVICE_TURA_AZON","S_TURA: " + turaID);
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
 
-          //LocationManager.GPS_PROVIDER: the name of the provider with which to register
-         //4000: LocationUpdate-ek közötti minimúm idő intervallum milisec-ben.
-        // 5: LocationUpdate-ek közötti minimúm távolság intervallum méterben.
-        // listener: neki az onLocationChanged metódusa minden locationUpdate-nál lefut. => Tehát dobunk egy broadcast üzit.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 5, listener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 5, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+        Toast.makeText(getApplicationContext(), "START_SERVICE", Toast.LENGTH_SHORT).show();
         Log.e("GPS_Service_onStart", "Elindult a Service");
     }
 
 
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
+    protected boolean vanJobbLocation(Location location, Location aktualisLegjobbLocation) {
+        if (aktualisLegjobbLocation == null) {
             return true;
         }
 
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-        boolean isNewer = timeDelta > 0;
+        long idoDelta = location.getTime() - aktualisLegjobbLocation.getTime();
+        boolean jelentosenUjabb = idoDelta > TWO_MINUTES;
+        boolean jelentosenRegebbi = idoDelta < -TWO_MINUTES;
+        boolean ujabb = idoDelta > 0;
 
-        // If it's been more than two minutes since the current location, use the new location because the user has likely moved
-        if (isSignificantlyNewer) {
+        if (jelentosenUjabb) {
             return true;
-        } else if (isSignificantlyOlder) {
+        } else if (jelentosenRegebbi) {
             return false;
         }
 
-        // Check whether the new location fix is more or less accura
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+        int pontossagDelta = (int) (location.getAccuracy() - aktualisLegjobbLocation.getAccuracy());
+        boolean kevesbePontos = pontossagDelta > 0;
+        boolean pontosabb = pontossagDelta < 0;
+        boolean legkevesbePontos = pontossagDelta > 200;
 
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
+        boolean ugyanattolaProvidertol = ugyanattolaProvidertol(location.getProvider(),
+                aktualisLegjobbLocation.getProvider());
 
-        // Determine location quality using a combination of timeliness and accuracy
-        if (isMoreAccurate) {
+        if (pontosabb) {
             return true;
-        } else if (isNewer && !isLessAccurate) {
+        } else if (ujabb && !kevesbePontos) {
             return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+        } else if (ujabb && !legkevesbePontos && ugyanattolaProvidertol) {
             return true;
         }
         return false;
     }
 
 
-    private boolean isSameProvider(String provider1, String provider2) {
+    private boolean ugyanattolaProvidertol(String provider1, String provider2) {
         if (provider1 == null) {
             return provider2 == null;
         }
@@ -98,27 +97,10 @@ public class GPS_Service extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("STOP_SERVICE", "DONE");
-
-
+        Toast.makeText(getApplicationContext(), "STOP_SERVICE", Toast.LENGTH_SHORT).show();
+        Log.e("STOP_SERVICE", "DONE");
         locationManager.removeUpdates(listener);
     }
-
-    //  public static Thread performOnBackgroundThread(final Runnable runnable) {
-    //      final Thread t = new Thread() {
-    //          @Override
-    //          public void run() {
-    //              try {
-    //                  runnable.run();
-    //              } finally {
-
-    //              }
-    //          }
-    //      };
-    //      t.start();
-    //      Log.e("GPS", "Elhalt");
-    //      return t;
-    //  }
 
 
     @Override
@@ -134,7 +116,7 @@ public class GPS_Service extends Service {
         public void onLocationChanged(final Location loc) {
             //Ha a pozíció megváltozik beszúrom az adatbázisba, és továbbítom a MainMenuActivity felé broadcast üzenetként.
             Log.i("onLocationChanged", "Location changed");
-            if (isBetterLocation(loc, previousBestLocation)) {
+            if (vanJobbLocation(loc, previousBestLocation)) {
                 loc.getLatitude();
                 loc.getLongitude();
                 intent.putExtra("LATITUDE", loc.getLatitude());
@@ -142,9 +124,8 @@ public class GPS_Service extends Service {
                 intent.putExtra("Provider", loc.getProvider());
 
                 sendBroadcast(intent);
-
                 Date d = new Date();
-                db.InsertRowGPSDATA(loc.getLatitude(), loc.getLongitude(), d.getTime());
+                db.InsertRowGPSDATA(turaID, loc.getLatitude(), loc.getLongitude(), loc.getAltitude(),loc.getSpeed(), d.getTime());
             }
         }
 

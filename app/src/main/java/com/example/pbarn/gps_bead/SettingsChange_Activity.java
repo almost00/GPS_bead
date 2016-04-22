@@ -1,41 +1,26 @@
 package com.example.pbarn.gps_bead;
 
 
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class SettingsChange_Activity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -90,8 +75,13 @@ public class SettingsChange_Activity extends AppCompatActivity implements Action
         tab2.setText("Beallitasok");
         tab2.setTabListener(this);
 
+        ActionBar.Tab tab3=ab.newTab();
+        tab3.setText("Turak");
+        tab3.setTabListener(this);
+
         ab.addTab(tab1, 0, false);  //Trze miatt ez lesz a Selected alapértelmezetten
         ab.addTab(tab2, 1, true);
+        ab.addTab(tab3, 2, false);
 
         ab.setDisplayShowTitleEnabled(false);
     }
@@ -277,7 +267,10 @@ public class SettingsChange_Activity extends AppCompatActivity implements Action
                 startActivity(intent_);
                 break;
             case "Beallitasok":
-
+                break;
+            case "Turak":
+                Intent intent = new Intent(this.getApplicationContext(),Turak_Activity.class);
+                startActivity(intent);
                 break;
 
         }

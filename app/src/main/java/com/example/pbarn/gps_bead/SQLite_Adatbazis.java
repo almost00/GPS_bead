@@ -31,20 +31,23 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
 
     //GPS_DATA tábla
     private static final String GPSDATA_ID = "ID";
-    private static final String GPSDATA_LONGITUDE = "Longitude";
-    private static final String GPSDATA_LATITUDE = "Latitude";
+    private static final String GPSDATA_turaID = "TuraID";
+    private static final String GPSDATA_LONGITUDE = "Longitude"; //Double
+    private static final String GPSDATA_LATITUDE = "Latitude"; //Double
+    private static final String GPSDATA_ALTITUDE = "Altitude"; //Double
+    private static final String GPSDATA_SPEED = "Speed";  //FLoat
     private static final String GPSDATA_TIMESTAMP = "Timestamp";
 
     private static final String CREATE_TABLE_SETTINGS = "CREATE TABLE if not EXISTS " + TABLE_SETTINGS
             + "(" + SETTINGS_ID + " INTEGER PRIMARY KEY," + SETTINGS_NEV + " VARCHAR," + SETTINGS_JELSZO + " VARCHAR,"
-            + SETTINGS_EMAIL + " VARCHAR," +SETTINGS_KEP + " VARCHAR" + ")";
+            + SETTINGS_EMAIL + " VARCHAR," + SETTINGS_KEP + " VARCHAR" + ")";
 
     private static final String CREATE_TABLE_GPSDATA = "CREATE TABLE if not EXISTS " + TABLE_GPSDATA
-            + "(" + GPSDATA_ID + " INTEGER PRIMARY KEY,"+  GPSDATA_LONGITUDE + " DOUBLE,"
-            + GPSDATA_LATITUDE + " DOUBLE,"+ GPSDATA_TIMESTAMP + " DATETIME" + ")";
+            + "(" + GPSDATA_ID + " INTEGER PRIMARY KEY," + GPSDATA_turaID + " INTEGER," + GPSDATA_LONGITUDE + " DOUBLE,"
+            + GPSDATA_LATITUDE + " DOUBLE," + GPSDATA_ALTITUDE + " DOUBLE," + GPSDATA_SPEED + " FLOAT," + GPSDATA_TIMESTAMP + " DATETIME" + ")";
 
 
-    public SQLite_Adatbazis(Context context){
+    public SQLite_Adatbazis(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         db = getWritableDatabase();
@@ -66,20 +69,22 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
     }
 
 
-    public  void InsertRowGPSDATA( double longitide, double latitude, long timestamp)
-    {
-        Log.e("InsertRowGPSDATA", "Sikeres beszúrás:" +"| Lon: " + longitide + "| Lat: " + latitude + "| Timestamp: " + timestamp);
+    public void InsertRowGPSDATA(double longitide, double latitude, long timestamp) {
+        Log.e("InsertRowGPSDATA", "Sikeres beszúrás:" + "| Lon: " + longitide + "| Lat: " + latitude + "| Timestamp: " + timestamp);
         db.execSQL("Insert into GpsData values(null," + longitide + "," + latitude + "," + timestamp + " );");
     }
 
-    public  void InsertRowSETTINGS(String nev, String jelszo, String email,  String kep)
-    {    //ID, Név, jelszó, email, kép
-        Log.e("InsertRowSETTINGS", "Sikeres beszúrás: Név:"+nev + "| Jelszo: "+ jelszo+ "| Email: " +email +"| kep: "+ kep);
-        db.execSQL("Insert into Settings values("+ 1 + ",'"+ nev +"','"+jelszo+"','"+ email +"','"+kep +"' );");
+    public void InsertRowGPSDATA(int turaid, double longitide, double latitude, double altitude, float speed, long timestamp) {
+        Log.e("InsertRowGPSDATA", "Sikeres beszúrás:" + "| Tura id: " + turaid + "| Lon: " + longitide + "| Lat: " + latitude + "| Alt: " + altitude + "| speed: " + speed + "| Timestamp: " + timestamp);
+        db.execSQL("Insert into GpsData values(null," + turaid + "," + longitide + "," + latitude + "," + altitude + "," + speed + "," + timestamp + " );");
     }
 
-    public void  TruncateSETTINGS()
-    {
+    public void InsertRowSETTINGS(String nev, String jelszo, String email, String kep) {    //ID, Név, jelszó, email, kép
+        Log.e("InsertRowSETTINGS", "Sikeres beszúrás: Név:" + nev + "| Jelszo: " + jelszo + "| Email: " + email + "| kep: " + kep);
+        db.execSQL("Insert into Settings values(" + 1 + ",'" + nev + "','" + jelszo + "','" + email + "','" + kep + "' );");
+    }
+
+    public void TruncateSETTINGS() {
         db.execSQL("DELETE FROM Settings;");
         db.execSQL("VACUUM;");
     }
@@ -96,7 +101,7 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
 
 
     //Regisztráció során, vagy később beállított kép lekérdezése
-    public Bitmap felhasznalokKep(){
+    public Bitmap felhasznalokKep() {
         Cursor b = db.rawQuery("Select Kep From Settings", null, null);
         Bitmap kep;
         if (b.moveToLast()) {
@@ -108,14 +113,25 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
         return null;
     }
 
+    //Utolsó ismert túra azonosító lekérdezése
+    public int SelectTuraID() {
+        Cursor c = db.rawQuery("Select TuraID From GpsData Order by ID DESC", null, null);
+        if (c.moveToFirst()) {
+            int turaid = c.getInt(c.getColumnIndex("TuraID"));
+            Log.e("SelectTuraID", "Tura azon: " + turaid);
+            c.close();
+
+            return turaid;
+        }
+        c.close();
+        return 0;
+    }
 
 
-
-    public  ArrayList<String> getSettingsAdatok()
-    {
+    public ArrayList<String> getSettingsAdatok() {
         Cursor b = db.rawQuery("Select * From Settings", null, null);
         ArrayList<String> adatok = new ArrayList<String>();
-        if(b.moveToLast()){
+        if (b.moveToLast()) {
             adatok.add(b.getString(b.getColumnIndex("Nev")));
             adatok.add(b.getString(b.getColumnIndex("Jelszo")));
             adatok.add(b.getString(b.getColumnIndex("Kep")));
@@ -132,18 +148,42 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
         return null;
     }
 
-    public  void updateSettingsRow(int id, String nev, String jelszo, String kep) {
+    public void updateSettingsRow(int id, String nev, String jelszo, String kep) {
 
         ContentValues cv = new ContentValues();
-        cv.put(SETTINGS_NEV,nev); //These Fields should be your String values of actual column names
-        cv.put(SETTINGS_JELSZO,jelszo);
+        cv.put(SETTINGS_NEV, nev); //These Fields should be your String values of actual column names
+        cv.put(SETTINGS_JELSZO, jelszo);
         cv.put(SETTINGS_KEP, kep);
         db.update(TABLE_SETTINGS, cv, SETTINGS_ID + "=" + id, null);
 
         Log.e("updateSettingsRow", cv.toString());
-
-
     }
 
 
+    public ArrayList<Tura> turaListaz() {
+        ArrayList<Tura> turakArrayList = new ArrayList<Tura>();
+        ArrayList<PozAdatok> pozadatok = new ArrayList<PozAdatok>();
+        for (int i = 0; i < 10; i++) {
+           Tura tura = new Tura();
+            Cursor c = db.rawQuery("Select * From GpsData  WHERE TuraID = ? ", new String[]{i + ""}, null);
+            while (c.moveToNext()) {
+
+                pozadatok.add(new PozAdatok(
+                        c.getDouble(c.getColumnIndex("Latitude")),
+                        c.getDouble(c.getColumnIndex("Longitude")),
+                        c.getDouble(c.getColumnIndex("Altitude")),
+                        c.getFloat(c.getColumnIndex("Speed")),
+                        c.getString(c.getColumnIndex("Timestamp"))
+                ));
+            }
+            tura.setTuraAzon(c.getString(c.getColumnIndex("TuraID")));
+            tura.setPozAdatok(pozadatok);
+            tura.setTuraDatum(c.getString(c.getColumnIndex("Timestamp")));
+            turakArrayList.add(tura);
+            pozadatok.clear();
+            c.close();
+        }
+
+        return turakArrayList;
+    }
 }

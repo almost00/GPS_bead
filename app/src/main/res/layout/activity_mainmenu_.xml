@@ -67,6 +67,8 @@
                         android:paddingTop="5dp"
                         android:src="@android:drawable/sym_def_app_icon" />
 
+
+
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="match_parent"
@@ -81,6 +83,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textView1"
                         android:text="android.studio@android.com" />
+
+                    <ToggleButton
+                        android:id="@+id/utvonalRogzitesIndatasToggleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@id/textView2"
+                        android:textOn= "Utvonal Rögzítés leállítása!"
+                        android:textOff=" Utvonal Rögzítés indítása! "
+                        android:layout_height="wrap_content" />
                 </RelativeLayout>
 
                 <!--    <Switch

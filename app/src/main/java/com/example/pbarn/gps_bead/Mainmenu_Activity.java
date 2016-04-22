@@ -24,8 +24,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -79,9 +81,14 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
         tab2.setText("Beallitasok");
         tab2.setTabListener(this);
 
+        ActionBar.Tab tab3=ab.newTab();
+        tab3.setText("Turak");
+        tab3.setTabListener(this);
+
 
         ab.addTab(tab1, 0, true);
         ab.addTab(tab2, 1, false);
+        ab.addTab(tab3, 2, false);
 
         ab.setDisplayShowTitleEnabled(false);
 
@@ -143,6 +150,28 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
 
         //ImageView kep beallit a navigation bar-on <-- Kerekített szélekkel
         imageViewKepBeallit(db.felhasznalokKep(), (ImageView) findViewById(R.id.imageView));
+
+
+         //Service elindítása a pozíció rögzítéshez
+        final ToggleButton serviceStart = (ToggleButton) findViewById(R.id.utvonalRogzitesIndatasToggleButton);
+        //Ha fut a servicem akkor checked legyen az alapértéke
+        if(isMyServiceRunning(GPS_Service.class)) serviceStart.setChecked(true);
+        serviceStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (serviceStart.isChecked()) {
+                    if (!isMyServiceRunning(GPS_Service.class)) {
+                        Intent intent = new Intent(Mainmenu_Activity.this, GPS_Service.class);
+                        intent.putExtra("TuraAzonosito", db.SelectTuraID() + 1); //Növeljük egyel és átadjuk a Service-nek
+                        startService(intent);
+                    }
+                } else {
+                    if (isMyServiceRunning(GPS_Service.class)) {
+                        stopService(new Intent(Mainmenu_Activity.this, GPS_Service.class));
+                    }
+                }
+            }
+        });
     }
 
     //ImageView kep beallit a navigation bar-on <-- Kerekített szélekkel
@@ -167,11 +196,7 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
     protected void onStart() {
         super.onStart();
 
-        if(!isMyServiceRunning(GPS_Service.class))
-        {
-            Intent intent = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.GPS_Service.class);
-            startService(intent);
-        }
+
     }
     //Csekkolom az éppen futó service-eket, ha fut a paraméterben beadott, akkor true értékkel visszatér.
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -184,13 +209,6 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
         return false;
     }
 
-    //Beállítások módosítása fül előhívásához.
-    public void settingsChangeActivityInditasaOnClick(View view)
-    {
-        Intent intent = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.SettingsChange_Activity.class);
-        startActivity(intent);
-
-    }
 
 
     @Override
@@ -213,6 +231,10 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
             case "Beallitasok":
                 Intent intent_ = new Intent(this.getApplicationContext(), com.example.pbarn.gps_bead.SettingsChange_Activity.class);
                 startActivity(intent_);
+                break;
+            case "Turak":
+                Intent intent = new Intent(this.getApplicationContext(), Turak_Activity.class);
+                startActivity(intent);
                 break;
            }
     }
