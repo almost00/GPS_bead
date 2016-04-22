@@ -1,11 +1,12 @@
 package com.example.pbarn.gps_bead;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by pbarn on 2016. 04. 22..
  */
-public class Tura {
+public class Tura implements Serializable {
 
     String turaAzon;
     String turaDatum;

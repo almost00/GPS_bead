@@ -1,9 +1,11 @@
 package com.example.pbarn.gps_bead;
 
+import java.io.Serializable;
+
 /**
  * Created by pbarn on 2016. 04. 22..
  */
-public class PozAdatok {
+public class PozAdatok implements Serializable {
     double lat;
     double lon;
     double alt;

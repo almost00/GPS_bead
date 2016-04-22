@@ -41,16 +41,32 @@
         SHA1: 27:5E:77:3A:57:D0:9A:CF:3B:26:29:E0:A5:1E:39:E0:56:55:3A:24
         API-Key: AIzaSyC2yBEwnuINdoBM7OBHRVgVvlmo5i4BnNs
         -->
-        <meta-data
+       <!-- <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC2yBEwnuINdoBM7OBHRVgVvlmo5i4BnNs" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version" /> -->
 
         <activity android:name=".SettingsChange_Activity" >
         </activity>
         <activity android:name=".Turak_Activity" >
+        </activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".TuraMapsActivity"
+            android:label="@string/title_activity_tura_maps" >
         </activity>
     </application>
 

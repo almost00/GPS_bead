@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Turak_Activity extends AppCompatActivity implements ActionBar.TabListener {
@@ -42,13 +41,17 @@ public class Turak_Activity extends AppCompatActivity implements ActionBar.TabLi
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Tura value = (Tura) adapter.getItem(position);
-                    String seged = "";
+
+                    Intent i = new Intent(Turak_Activity.this, TuraMapsActivity.class);
+                    i.putExtra("Tura", (Serializable) value);
+                    startActivity(i);
+                  /*  String seged = "";
                     for(int i = 0; i< value.getPozAdatok().size(); i++)
                     {
                         seged +=  value.getPozAdatok().get(i).getLat() + " ";
                         Log.e("LAt", value.pozAdatok.get(i).lat + " " + value.pozAdatok.get(i).time);
                     }
-                    Toast.makeText(getApplicationContext(),seged, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),seged, Toast.LENGTH_LONG).show();*/
 
                 }
             });
@@ -131,7 +134,7 @@ public class Turak_Activity extends AppCompatActivity implements ActionBar.TabLi
 
 
             // Populate the data into the template view using the data object
-            turazon.setText(tura.getTuraAzon());
+            turazon.setText(tura.getTuraAzon()+ "- Azonosítójú túra megtekintése.");
 
             // Return the completed view to render on screen
             return convertView;

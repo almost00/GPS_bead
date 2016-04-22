@@ -179,7 +179,6 @@ public class SQLite_Adatbazis extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex("Timestamp"))
                 ));
                 tura.setTuraAzon(c.getString(c.getColumnIndex("TuraID")));
-
                 tura.setTuraDatum(c.getString(c.getColumnIndex("Timestamp")));
             }
             if( tura.getTuraAzon() != null) {

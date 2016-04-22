@@ -10,4 +10,5 @@
     <string name="JelszóMódosítás">Jelszó módosítás</string>
     <string name="Vissza">Vissza</string>
     <string name="google_app_id">56</string>
+    <string name="title_activity_tura_maps">Map</string>
 </resources>
