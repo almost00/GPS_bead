@@ -125,7 +125,7 @@ public class GPS_Service extends Service {
 
                 sendBroadcast(intent);
                 Date d = new Date();
-                db.InsertRowGPSDATA(turaID, loc.getLatitude(), loc.getLongitude(), loc.getAltitude(),loc.getSpeed(), d.getTime());
+                db.InsertRowGPSDATA(turaID,  loc.getLongitude(),loc.getLatitude(), loc.getAltitude(),loc.getSpeed(), d.getTime());
             }
         }
 
