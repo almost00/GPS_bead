@@ -75,14 +75,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/imageView"
                         android:paddingTop="16dp"
-                        android:text="Android Studio" />
+                        android:text="@string/AppName" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textView1"
-                        android:text="android.studio@android.com" />
+                        android:text="@string/AuthorEmail" />
 
                     <ToggleButton
                         android:id="@+id/utvonalRogzitesIndatasToggleButton"
@@ -102,15 +102,18 @@
                         android:text="Wifi" /> -->
                 <TextView
                     android:id="@+id/altalanos_beallitasok"
+                    android:drawableLeft="@drawable/ic_setting_dark"
+                    android:drawablePadding="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/navigationbar_fejlec"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="40dp"
+                    android:padding="5dp"
                     android:singleLine="false"
-                    android:text="Általános beállítások"
+                    android:text="@string/Settings"
                     android:textColor="#4a4343"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:gravity="center" />
 
 
                 <TextView
@@ -121,7 +124,7 @@
                     android:paddingBottom="15dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="15dp"
-                    android:text="GPS bekapcsolasa" />
+                    android:text="@string/EnableGPS" />
 
                 <TextView
                     android:id="@+id/AdatforgalomBekapcsolasTextView"
@@ -131,7 +134,7 @@
                     android:paddingBottom="15dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="15dp"
-                    android:text="Adatforgalom bekapcsolasa" />
+                    android:text="@string/Roaming" />
 
                 <View
                     android:id="@+id/elvalaszto_vonal"
@@ -141,17 +144,40 @@
                     android:background="#fefefe" />
 
 
+                <TextView
+                    android:drawableLeft="@android:drawable/ic_menu_mapmode"
+                    android:drawablePadding="5dp"
+                    android:id="@+id/MenuValasztasTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/elvalaszto_vonal"
+                    android:padding="5dp"
+                    android:text="Menü választás"
+                    android:textColor="#4a4343"
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:gravity="center"/>
+
 
                 <TextView
                     android:id="@+id/SzemelyesBeallitasokTextView"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/elvalaszto_vonal"
+                    android:layout_below="@+id/MenuValasztasTextView"
                     android:paddingBottom="15dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="15dp"
+                    android:text="@string/PersonalSettings" />
 
-                    android:text="Személyes adatok beállítása." />
+                <TextView
+                    android:id="@+id/TurakTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/SzemelyesBeallitasokTextView"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/Tracks" />
 
 
             </RelativeLayout>

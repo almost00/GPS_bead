@@ -7,7 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Jelszó módosítás:"
+        android:text="@string/PasswordChange"
         android:id="@+id/textView3"
         android:textAlignment="center"
         android:singleLine="false"
@@ -18,30 +18,30 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextSettingsChangeJelszoModositasRegiJelszo"
-        android:hint="Írd be az aktuális jelszavad!" />
+        android:hint="@string/ActualPassword" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextSettingsChangeJelszoModositasUjJelszo_1"
-        android:hint="Írd be az új jelszavad!" />
+        android:hint="@string/WriteNewPassword" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextSettingsChangeJelszoModositasUjJelszo_2"
-        android:hint="Írd be az új jelszavad!" />
+        android:hint="@string/WriteNewPasswordAgain" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Mentés"
+        android:text="@string/SavePassword"
         android:id="@+id/button"
         android:onClick="SettingsChangeJelszoModositasMentesOnclick"/>
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Mégse"
+        android:text="@string/UndoPassword"
         android:id="@+id/button2"
         android:onClick="SettingsChangeJelszoModositasMegseOnclick"/>
 

@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="A jelenlegi felhasználóneved:"
+        android:text="@string/ActualUserName"
         android:id="@+id/textView3"
         android:textAlignment="center"
         android:singleLine="false"
@@ -29,18 +29,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextSettingsChangeFelhasznalonevModositas"
-        android:hint="Írd be az új felhasználóneved" />
+        android:hint="@string/NewUserName" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Mentés"
+        android:text="@string/SaveName"
         android:id="@+id/button"
         android:onClick="SettingsChangeFelhasznalonevModositasMentesOnclick"/>
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Mégse"
+        android:text="@string/Undo"
         android:id="@+id/button2"
         android:onClick="SettingsChangeFelhasznalonevModositasMegseOnclick"/>
 </LinearLayout>

@@ -172,6 +172,18 @@ public class Mainmenu_Activity extends AppCompatActivity implements ActionBar.Ta
                 }
             }
         });
+
+
+
+        TextView turakMegnyitasa = (TextView)findViewById(R.id.TurakTextView);
+        turakMegnyitasa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Turak_Activity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     //ImageView kep beallit a navigation bar-on <-- Kerekített szélekkel

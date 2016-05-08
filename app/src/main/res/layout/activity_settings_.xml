@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Telefon azonosító: "
+        android:text="@string/phoneID"
         android:textAlignment="textStart"
         android:paddingTop="10dp"
         android:id="@+id/textViewTelefonAzon" />
@@ -19,26 +19,26 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="E-mail cím"
+        android:hint="@string/EmailAddress"
         android:id="@+id/textViewEmail" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Név"
+        android:hint="@string/Name"
         android:id="@+id/textViewNev" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Jelszó"
+        android:hint="@string/Password"
         android:id="@+id/textViewJelszo" />
 
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Jelszó mégegyszer"
+        android:hint="@string/PasswordAgain"
         android:id="@+id/textViewtextViewJelszomegint" />
 
     <ImageView
@@ -55,7 +55,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Kép csere"
+        android:text="@string/ImageChange"
         android:id="@+id/buttonKepCsere"
         android:onClick="settings_Kepcsere"
         android:layout_gravity="left" />
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="left"
-        android:text="Mentés"
+        android:text="@string/Save"
         android:onClick="OnClickSettingsMentes"
         android:clickable="false"
         android:focusable="false"
