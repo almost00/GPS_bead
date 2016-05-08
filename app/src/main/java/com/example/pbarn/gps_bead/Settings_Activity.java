@@ -1,39 +1,22 @@
 package com.example.pbarn.gps_bead;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 
 public class Settings_Activity extends AppCompatActivity {
@@ -131,7 +114,7 @@ public class Settings_Activity extends AppCompatActivity {
                     Log.e("OnClickSettingsMentes", "A beadott adatok érvésnyesek");
                     //Ha mindent beadott helyesen akkor beszúrom a db-be
 
-                    db.InsertRowSETTINGS(name, password, email, kivalasztottKepBase64);
+                    db.InsertRowSETTINGS(name, passwordSha1, email, kivalasztottKepBase64);
                     startMainActivity();
                 }
                 else

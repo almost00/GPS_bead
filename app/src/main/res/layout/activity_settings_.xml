@@ -8,13 +8,6 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/phoneID"
-        android:textAlignment="textStart"
-        android:paddingTop="10dp"
-        android:id="@+id/textViewTelefonAzon" />
 
     <EditText
         android:layout_width="match_parent"
@@ -32,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Password"
+        android:inputType="textPassword"
         android:id="@+id/textViewJelszo" />
 
 
@@ -39,13 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/PasswordAgain"
+        android:inputType="textPassword"
         android:id="@+id/textViewtextViewJelszomegint" />
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/imageViewKep"
-        android:background="#f3e5e5"
         android:clickable="true"
         android:onClick="settings_Kepcsere"
         android:src="@android:drawable/sym_def_app_icon"
